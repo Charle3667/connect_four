@@ -68,14 +68,90 @@ class GameBoard
   end
 
   def play_a_game
-    end_game = false
-    for turn in (0..1)
-      if end_game == true
-        print "Thanks for playing!"
+    puts 'Welcome to connect four!'
+    show_board
+    turn_counter = 0
+    for turn in (0..35)
+      turn_counter += 1
+      if win_check
+        puts "Thanks for playing!"
         break
       end
-      player_one_move
-      player_two_move
+      turn_counter % 2 == 0 ? player_two_move : player_one_move
     end 
+  end
+
+  def check_x_axis
+    win = false
+    winner = nil
+    for array in @board
+      last_slot = nil
+      in_a_row = 0
+      for slot in array
+        if slot == 'x' || slot == 'o'
+          if slot == last_slot
+            in_a_row += 1
+          else
+            last_slot = slot
+            in_a_row = 1
+          end
+        else
+          last_slot = slot
+          in_a_row = 0
+        end
+        if in_a_row == 4 
+          win = true
+          winner = last_slot
+          break
+        end
+      end
+    end
+    if win == true 
+      winner == 'x' ? (puts 'Player one wins!') : (puts 'Player two wins!')
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_y_axis
+    win = false
+    winner = nil
+    for column in (0..5)
+      last_slot = nil
+      in_a_row = 0
+      for array in (0..5)
+        if @board[array][column] == 'x' || @board[array][column] == 'o'
+          if @board[array][column] == last_slot
+            in_a_row += 1
+          else
+            last_slot = @board[array][column]
+            in_a_row = 1
+          end
+        else
+          last_slot = @board[array][column]
+          in_a_row = 0
+        end
+        if in_a_row == 4 
+          win = true
+          winner = last_slot
+          break
+        end
+      end
+    end
+    if win == true 
+      winner == 'x' ? (puts 'Player one wins!') : (puts 'Player two wins!')
+      return true
+    else
+      return false
+    end
+  end
+
+  def win_check
+    if check_x_axis || check_y_axis
+      return true
+    else
+      return false
+    end
   end
 end
