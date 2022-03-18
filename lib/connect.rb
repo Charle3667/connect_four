@@ -147,8 +147,75 @@ class GameBoard
     end
   end
 
+  def check_diag(array, column, player)
+    @board[array][column] == player ? true  : false
+  end
+
+  def check_all_diags
+    range = (3..5).to_a
+    range_two = (0..5).to_a
+    win = false
+    for array in range.reverse
+      for column in range_two
+        if @board[array][column] == 'x' || @board[array][column] == 'o'
+          checks = 1
+          y = array
+          x = column
+          while checks < 5
+            if checks == 4
+              if @board[array][column] == 'x'
+                puts 'Player one wins!'
+              else
+                puts 'Player two wins!'
+              end
+              win = true
+              break
+            end
+            checks += 1
+            y -= 1
+            x += 1
+            unless check_diag(y, x, @board[array][column])
+              break
+            end
+          end
+          checks = 1
+          y = array
+          x = column
+          while checks < 5
+            if checks == 4
+              if @board[array][column] == 'x'
+                puts 'Player one wins!'
+              else
+                puts 'Player two wins!'
+              end
+              win = true
+              break
+            end
+            checks += 1
+            y -= 1
+            x -= 1
+            unless check_diag(y, x, @board[array][column])
+              break
+            end
+          end
+          if win == true
+            break
+          end
+        end
+        if win == true
+          break
+        end
+        if win == true
+          break
+        end
+      end
+    end
+    win == true ? true : false
+  end
+
+
   def win_check
-    if check_x_axis || check_y_axis
+    if check_x_axis || check_y_axis || check_all_diags
       return true
     else
       return false
